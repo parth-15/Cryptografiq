@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is integration between token streaming protocol(Sablier in this case) and AAVE. Token Streaming Protocols streams tokens every second. It is commonly observed that stream receiver doesn't claim the token daily(regularly) but when it reaches certain volume or if they are in need. So, the idea of this project is to deposit this unclaimed tokens to AAVE so that it automatically earns yield and are not considered to be dead assets. Gelato bots are used for triggering transaction at regular interval.
+This project is integration between token streaming protocol(Sablier and LlamaPay) and AAVE. Token Streaming Protocols streams tokens every second. It is commonly observed that stream receiver doesn't claim the token daily(regularly) but when it reaches certain volume or if they are in need. So, the idea of this project is to deposit this unclaimed tokens to AAVE so that it automatically earns yield and are not considered to be dead assets. Gelato bots are used for triggering transaction at regular interval.
 
 ## Flow diagram
 
