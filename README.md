@@ -1,66 +1,39 @@
-## Foundry
+# Cryptografiq
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+## Overview
 
-Foundry consists of:
+This project is integration between token streaming protocol(Sablier in this case) and AAVE. Token Streaming Protocols streams tokens every second. It is commonly observed that stream receiver doesn't claim the token daily(regularly) but when it reaches certain volume or if they are in need. So, the idea of this project is to deposit this unclaimed tokens to AAVE so that it automatically earns yield and are not considered to be dead assets. Gelato bots are used for triggering transaction at regular interval.
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+## Flow diagram
 
-## Documentation
+![Screenshot](/Screenshot.jpeg)
 
-https://book.getfoundry.sh/
+## Contracts overview
 
-## Usage
+### LockupLinearStreamCreator
 
-### Build
+`createLockupLinearStream`: creates the linear stream. This will generally be used to create stream to the `LinearStreamReceiver` contract which automatically deposits to AAVE with help of Gelato bots.
 
-```shell
-$ forge build
-```
+### LinearStreamReceiver
 
-### Test
+`withdraw`: This is used to withdraw the tokens gathered from the stream till now. It also allows partial withdraw of unclaimed tokens. Only owner can call this function.
 
-```shell
-$ forge test
-```
+`withdrawMax`: This is used to withdraw all the tokens gathered from the stream till now. Only owner can call this function.
 
-### Format
+`withdrawAndSupplyOnAave`: This function is used to withdraw all the tokens gathered from the stream till now and supply it on AAVE to earn yield. `LinearStreamReceiver` contract will receive `aTokens` for the tokens deposited. This function is supposed to be called by Gelato bots at regular interval.
 
-```shell
-$ forge fmt
-```
+`withdrawFromAave`: This function is used to withdraw the tokens deposited from AAVE and send it to the caller specified address. Only owner can call this function.
 
-### Gas Snapshots
+`updateDedicatedMsgSender`: This function is used to update the address of Gelato bots which has permission to call `withdrawAndSupplyOnAave`.
 
-```shell
-$ forge snapshot
-```
+## Setup and tests
 
-### Anvil
+* Make sure you have foundry installed.
+* Make `.env` file and populate the environment variable mentioned in `.env.example`.
+* Run `forge test` to run the tests.
 
-```shell
-$ anvil
-```
 
-### Deploy
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
 
-### Cast
 
-```shell
-$ cast <subcommand>
-```
 
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
